@@ -1,0 +1,6 @@
+{
+  "appId": "com.ziad.htmlapp",
+  "appName": "MyHTMLApp",
+  "webDir": "www",
+  "bundledWebRuntime": false
+}
