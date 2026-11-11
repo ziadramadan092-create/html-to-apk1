@@ -109,6 +109,13 @@ select{appearance:none;-webkit-appearance:none;border:1px solid var(--line);back
 .cg .td{background:var(--acc);color:var(--ink)}.cg .td small{color:var(--ink)}
 .cg .ev{box-shadow:inset 0 0 0 2px var(--acc)}
 .el{font-size:14px;padding:6px 4px;color:var(--mut)}.el b{color:var(--acc)}
+.sw input{display:none}.sw i{width:52px;height:30px;border-radius:30px;background:rgba(127,127,127,.4);display:block;position:relative;cursor:pointer;transition:background .2s;box-shadow:inset 0 0 0 1px var(--line)}
+.sw i::after{content:"";position:absolute;top:3px;right:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:right .2s}
+.sw input:checked+i{background:var(--acc)}.sw input:checked+i::after{right:25px}
+.rc{display:flex;gap:10px;align-items:center}
+.tm{background:var(--card2);color:var(--tx);border:0;border-radius:10px;padding:6px 8px;font:700 15px Tajawal}
+.toast{position:fixed;top:calc(10px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);width:calc(100% - 24px);max-width:496px;z-index:50;background:var(--acc);color:var(--ink);border-radius:18px;padding:12px 14px;display:flex;gap:8px;align-items:center;font-weight:800;box-shadow:0 10px 30px rgba(0,0,0,.3)}
+.toast span{flex:1}.toast button{border:0;border-radius:12px;padding:8px 12px;font:700 14px Tajawal;background:rgba(0,0,0,.18);color:inherit;cursor:pointer}
 </style>
 </head>
 <body>
@@ -182,9 +189,9 @@ D.duas={t:"الأدعية",i:"🤲",c:"#1fb5c9",items:DUAS.map(function(d){retur
 D.after={t:"أذكار بعد الصلاة",i:"🕌",c:"#e0a526",items:[["أَسْتَغْفِرُ اللَّهَ",3],["اللَّهُمَّ أَنْتَ السَّلَامُ وَمِنْكَ السَّلَامُ، تَبَارَكْتَ يَا ذَا الْجَلَالِ وَالْإِكْرَامِ",1],["سُبْحَانَ اللَّهِ",33],["الْحَمْدُ لِلَّهِ",33],["اللَّهُ أَكْبَرُ",33],["لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ",1]]};
 var AYAH="وَإِن تَوَلَّوْا فَاعْلَمُوا أَنَّ اللَّهَ مَوْلَاكُمْ ۚ نِعْمَ الْمَوْلَىٰ وَنِعْمَ النَّصِيرُ ﴿٤٠﴾ - سورة الأنفال";
 var TAS=["سُبْحَانَ اللَّهِ","الْحَمْدُ لِلَّهِ","اللَّهُ أَكْبَرُ","سُبْحَانَ اللَّهِ وَبِحَمْدِهِ","لَا إِلَهَ إِلَّا اللَّهُ","أَسْتَغْفِرُ اللَّهَ"];
-var S={tab:"home",sub:"azkar",view:null,q:"",tas:{i:0,n:0,tot:0,goal:33},loc:{lat:30.0444,lng:31.2357,name:"القاهرة"},rd:null,fs:30,my:{}};
-function ld(){try{var v=localStorage.getItem("azkar");if(v){var o=JSON.parse(v);S.tas=o.tas||S.tas;S.loc=o.loc||S.loc;S.my=o.my||{};for(var mk in S.my){if(!D[mk])delete S.my[mk]}S.fs=o.fs||30}}catch(e){}}
-function sv(){try{localStorage.setItem("azkar",JSON.stringify({tas:S.tas,loc:S.loc,my:S.my,fs:S.fs}))}catch(e){}}
+var S={rem:{m:{on:0,t:"06:00"},e:{on:0,t:"17:00"},s:{on:0,t:"22:30"},p:{on:0}},tab:"home",sub:"azkar",view:null,q:"",tas:{i:0,n:0,tot:0,goal:33},loc:{lat:30.0444,lng:31.2357,name:"القاهرة"},rd:null,fs:30,my:{}};
+function ld(){try{var v=localStorage.getItem("azkar");if(v){var o=JSON.parse(v);S.tas=o.tas||S.tas;S.loc=o.loc||S.loc;S.my=o.my||{};for(var mk in S.my){if(!D[mk])delete S.my[mk]}S.fs=o.fs||30;if(o.rem)S.rem=o.rem}}catch(e){}}
+function sv(){try{localStorage.setItem("azkar",JSON.stringify({tas:S.tas,loc:S.loc,my:S.my,fs:S.fs,rem:S.rem}))}catch(e){}}
 function $(id){return document.getElementById(id)}
 function esc(s){return String(s).replace(/[&<>]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;"}[c]})}
 
@@ -214,7 +221,7 @@ function render(){
  if(S.tab==="pray")tick();
 }
 function home(){
- if(S.view==="duas"){
+ if(S.view==="rem")return remView();if(S.view==="duas"){
   var q=S.q.trim(),l=DUAS.map(function(d,i){return[d,i]}).filter(function(x){return !q||x[0][0].indexOf(q)>-1});
   return '<div class="top"><button class="back" data-go="">‹ رجوع</button><b>الأدعية</b></div><input class="search" id="q" placeholder="🔍 البحث عن دعاء" value="'+esc(S.q)+'">'+
   '<div class="list">'+(l.length?l.map(function(x){return '<button class="row" data-open="duas" data-i="'+x[1]+'"><span class="n">'+(x[1]+1)+'</span>'+esc(x[0][0])+'</button>'}).join(""):'<div class="empty">لا توجد نتائج. جرّب كلمة أخرى.</div>')+'</div>';
@@ -225,7 +232,7 @@ function home(){
  }
  var T=[["duas","الأدعية"]];
  var rows=["morning","evening","after","sleep","wake"].map(function(k){return '<button class="row" data-open="'+k+'"><span class="ico" style="background:'+D[k].c+'">'+D[k].i+'</span>'+D[k].t+'</button>'}).join("");
- var tiles=[["duas","🤲","#1fb5c9","الأدعية"],["tasb","📿","#ff5c8a","تسبيح"]].map(function(t){return '<button class="tile" data-'+(t[0]==="tasb"?'tab="tas"':t[0]==="duas"?'view="duas"':'open="'+t[0]+'"')+'><span class="ico" style="background:'+t[2]+'">'+t[1]+'</span>'+t[3]+'</button>'}).join("");
+ var tiles=[["duas","🤲","#1fb5c9","الأدعية"],["tasb","📿","#ff5c8a","تسبيح"],["rem","🔔","#9b6cff","التذكيرات"]].map(function(t){return '<button class="tile" data-'+(t[0]==="tasb"?'tab="tas"':t[0]==="duas"||t[0]==="rem"?'view="'+t[0]+'"':'open="'+t[0]+'"')+'><span class="ico" style="background:'+t[2]+'">'+t[1]+'</span>'+t[3]+'</button>'}).join("");
  return head()+'<div class="ayah"><b>📖 آية اليوم</b><p>'+AYAH+'</p></div><div class="list" style="margin-bottom:14px">'+rows+'</div><div class="grid">'+tiles+'</div><div class="dev">تطوير وبرمجة<br><b>ENG-Ziad Hanzal</b></div>';
 }
 function head(){return '<div class="hero"><div><small>السلام عليكم ورحمة الله</small><h1>أذكار المسلم</h1></div></div>'+pstrip()+calendar()}
@@ -269,11 +276,11 @@ function step(d){
 }
 function closeR(){$("reader").hidden=true;S.rd=null}
 document.addEventListener("click",function(e){
- var b=e.target.closest("[data-cal],[data-tab],[data-sub],[data-open],[data-go],[data-view],[data-close],[data-nav],[data-dec],[data-fs],[data-share],[data-goal],#ring,#rst,#geo,#cmp");if(!b)return;
+ var b=e.target.closest("[data-cal],[data-tab],[data-sub],[data-open],[data-go],[data-view],[data-close],[data-nav],[data-dec],[data-fs],[data-share],[data-goal],#ring,#rst,#geo,#cmp,#rtest");if(!b)return;
  var d=b.dataset;
  if(d.goal){e.preventDefault();S.tas.goal=+d.goal;sv();render();return}
  if(b.id==="ring"){var T=S.tas;T.n++;T.tot++;if(T.n>=T.goal){T.n=0;if(navigator.vibrate)navigator.vibrate(60)}sv();b.textContent=T.n;document.querySelector(".chip").textContent="الإجمالي: "+T.tot;return}
- if(b.id==="cmp"){cmp();return}if(b.id==="rst"){S.tas.n=0;sv();render();return}
+ if(b.id==="rtest"){askPerm();notify("test","أذكار المسلم","هذا تذكير تجريبي، جزاك الله خيرًا","morning");return}if(b.id==="cmp"){cmp();return}if(b.id==="rst"){S.tas.n=0;sv();render();return}
  if(b.id==="geo"){if(navigator.geolocation)navigator.geolocation.getCurrentPosition(function(p){S.loc={lat:p.coords.latitude,lng:p.coords.longitude,name:"موقعك الحالي"};sv();render()},function(){alert("تعذّر تحديد موقعك. فعّل إذن الموقع للمتصفح ثم أعد المحاولة.")});return}
  if(d.cal){calNav(d.cal);return}if(d.tab==="theme"){toggleTheme();return}if(d.tab){S.tab=d.tab;S.view=null;closeR();render();return}
  if(d.sub){S.sub=d.sub;render();return}
@@ -321,7 +328,33 @@ function calendar(){
   s+='<div class="cn"><button class="act" data-cal="prev">›</button><span>'+mn+'</span><button class="act" data-cal="next">‹</button></div><div class="cg">'+c+'</div>'+el+'<div style="text-align:center;margin-top:8px"><button class="act" data-cal="today">اليوم</button></div><div class="sm">التقويم هو أم القرى، قد يختلف عن الرؤية المحلية بيوم.</div>'
  }
  return s+'</div>'}
+var RN={m:["أذكار الصباح","morning","🌅"],e:["أذكار المساء","evening","🌇"],s:["أذكار النوم","sleep","🛏️"]};
+function pd(n){return n<10?"0"+n:""+n}
+function f24(h){h=((h%24)+24)%24;var m=Math.round(h*60);return pd(Math.floor(m/60)%24)+":"+pd(m%60)}
+function remView(){var h='<div class="top"><button class="back" data-go="">‹ رجوع</button><b>التذكيرات</b></div>';
+ ["m","e","s"].forEach(function(k){var r=S.rem[k];h+='<div class="pt"><span>'+RN[k][2]+' '+RN[k][0]+'</span><span class="rc"><input type="time" class="tm" data-rt="'+k+'" value="'+r.t+'"><label class="sw"><input type="checkbox" data-rk="'+k+'"'+(r.on?" checked":"")+'><i></i></label></span></div>'});
+ h+='<div class="pt"><span>🕌 تذكير عند كل أذان</span><label class="sw"><input type="checkbox" data-rk="p"'+(S.rem.p.on?" checked":"")+'><i></i></label></div>';
+ return h+'<div class="sm" id="rs2">'+remStatus()+'</div><div style="text-align:center"><button class="act" id="rtest">🔔 تجربة إشعار</button></div>'}
+function LN(){return window.Capacitor&&Capacitor.Plugins&&Capacitor.Plugins.LocalNotifications}
+function remStatus(){if(LN())return "التذكيرات تعمل في الخلفية حتى لو التطبيق مغلق.";if(!("Notification" in window))return "هذا المتصفح لا يدعم الإشعارات، ستظهر تنبيهات داخل التطبيق عند فتحه.";var p=Notification.permission;if(p==="denied")return "الإشعارات محظورة. فعّلها من إعدادات المتصفح للموقع.";if(p==="granted")return "الإشعارات مفعّلة. التذكير يعمل أثناء فتح التطبيق أو بقائه في الخلفية، وللتذكير وهو مغلق ثبّته كتطبيق أندرويد/آيفون.";return "فعّل أي تذكير لطلب إذن الإشعارات."}
+function remRefresh(){var e=$("rs2");if(e)e.textContent=remStatus()}
+function askPerm(){try{if(!LN()&&"Notification" in window&&Notification.permission==="default")Notification.requestPermission().then(remRefresh)}catch(e){}}
+function toast(m,k){var o=$("toast");if(o)o.remove();var d=document.createElement("div");d.className="toast";d.id="toast";d.innerHTML='<span>🔔 '+esc(m)+'</span>'+(k&&D[k]?'<button data-open="'+k+'" onclick="this.parentNode.remove()">فتح</button>':'')+'<button onclick="this.parentNode.remove()">✕</button>';document.body.appendChild(d);try{if(navigator.vibrate)navigator.vibrate(120)}catch(e){}}
+function notify(tag,title,body,key){toast(title+" — "+body,key);try{if("Notification" in window&&Notification.permission==="granted"){var o={body:body,tag:tag,icon:"icon.svg",badge:"icon.svg",dir:"rtl",lang:"ar",data:{k:key}};if(navigator.serviceWorker)navigator.serviceWorker.getRegistration().then(function(r){if(r)r.showNotification(title,o);else new Notification(title,o)}).catch(function(){});else new Notification(title,o)}}catch(e){}}
+function remTick(){var n=new Date(),nm=n.getHours()*60+n.getMinutes(),hm=pd(n.getHours())+":"+pd(n.getMinutes()),day=n.toDateString(),F=S.fired||(S.fired={});
+ ["m","e","s"].forEach(function(k){var r=S.rem[k];if(!r.on||F[k]===day)return;var a=r.t.split(":"),df=nm-(+a[0]*60+ +a[1]);if(df===0){F[k]=day;notify("r"+k,"حان وقت "+RN[k][0],"لا تنسَ وردك من الأذكار",RN[k][1])}else if(S.ct&&df>0&&df<=120){F[k]=day;toast("فاتك موعد "+RN[k][0]+". اقرأها الآن",RN[k][1])}});
+ if(S.rem.p.on){var t=pray(S.loc.lat,S.loc.lng,n,-n.getTimezoneOffset()/60);[0,2,3,4,5].forEach(function(i){if(f24(t[i][2])===hm&&F["p"+i]!==day){F["p"+i]=day;notify("p"+i,"حان موعد صلاة "+t[i][0],"أذكار بعد الصلاة تنتظرك","after")}})}}
+function schedNative(){var L=LN();if(!L)return;var ids=[];for(var q=1;q<=200;q++)ids.push({id:q});L.requestPermissions().then(function(){return L.cancel({notifications:ids})}).then(function(){var ns=[],id=1;["m","e","s"].forEach(function(k){var r=S.rem[k];if(r.on){var a=r.t.split(":");ns.push({id:id++,title:"حان وقت "+RN[k][0],body:"لا تنسَ وردك من الأذكار",schedule:{on:{hour:+a[0],minute:+a[1]},allowWhileIdle:true}})}});
+ if(S.rem.p.on){for(var d=0;d<7;d++){var dt=new Date();dt.setDate(dt.getDate()+d);var t=pray(S.loc.lat,S.loc.lng,dt,-dt.getTimezoneOffset()/60);[0,2,3,4,5].forEach(function(i){var h=t[i][2],at=new Date(dt.getFullYear(),dt.getMonth(),dt.getDate(),Math.floor(h),Math.round((h%1)*60));if(at>new Date())ns.push({id:100+d*6+i,title:"حان موعد صلاة "+t[i][0],body:"أذكار بعد الصلاة تنتظرك",schedule:{at:at,allowWhileIdle:true}})})}}
+ return ns.length?L.schedule({notifications:ns}):0}).catch(function(){})}
+document.addEventListener("change",function(e){var t=e.target,k=t.dataset&&t.dataset.rk;if(k){S.rem[k].on=t.checked?1:0;if(t.checked)askPerm();sv();schedNative();remRefresh()}else if(t.dataset&&t.dataset.rt){S.rem[t.dataset.rt].t=t.value||"06:00";var f=S.fired;if(f)delete f[t.dataset.rt];sv();schedNative()}});
 ld();render();
+var hk=location.hash.slice(1);if(D[hk]&&D[hk].items)openR(hk);
+window.addEventListener("hashchange",function(){var h=location.hash.slice(1);if(D[h]&&D[h].items)openR(h)});
+if(navigator.serviceWorker)navigator.serviceWorker.addEventListener("message",function(e){if(e.data&&D[e.data.open])openR(e.data.open)});
+S.ct=1;remTick();S.ct=0;setInterval(remTick,15000);
+document.addEventListener("visibilitychange",function(){if(!document.hidden){S.ct=1;remTick();S.ct=0}});
+if(S.rem.m.on||S.rem.e.on||S.rem.s.on||S.rem.p.on)schedNative();
 </script>
 </body>
 </html>
