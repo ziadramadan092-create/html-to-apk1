@@ -29,6 +29,10 @@ jobs:
     - name: Add Android Platform via Capacitor
       run: npx cap add android
 
+    - name: Generate App Icons
+      run: |
+        npm install -D @capacitor/assets
+        npx capacitor-assets generate --android
     - name: Copy Web Assets to Android project
       run: npx cap copy android
 
