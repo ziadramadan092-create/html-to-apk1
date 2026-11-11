@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>أذكار المسلم</title><meta name="author" content="ENG-Ziad Hanzal"><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="icon.svg"><meta name="theme-color" content="#06141c"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="أذكار المسلم">
+<title>أذكار المسلم</title><meta name="author" content="ENG-Ziad Hanzal"><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg" type="image/svg+xml"><link rel="icon" href="icon-192.png" type="image/png"><link rel="apple-touch-icon" href="icon-512.png"><meta name="theme-color" content="#06141c"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="أذكار المسلم">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=Amiri:wght@400;700&display=swap">
 <style>
 :root{--bg1:#0f5c47;--bg2:#0a2f3a;--card:rgba(255,255,255,.1);--card2:rgba(255,255,255,.16);--tx:#fff;--mut:rgba(255,255,255,.7);--acc:#5fd6a4;--ink:#0b2a2a;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -116,6 +116,7 @@ select{appearance:none;-webkit-appearance:none;border:1px solid var(--line);back
 .tm{background:var(--card2);color:var(--tx);border:0;border-radius:10px;padding:6px 8px;font:700 15px Tajawal}
 .toast{position:fixed;top:calc(10px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);width:calc(100% - 24px);max-width:496px;z-index:50;background:var(--acc);color:var(--ink);border-radius:18px;padding:12px 14px;display:flex;gap:8px;align-items:center;font-weight:800;box-shadow:0 10px 30px rgba(0,0,0,.3)}
 .toast span{flex:1}.toast button{border:0;border-radius:12px;padding:8px 12px;font:700 14px Tajawal;background:rgba(0,0,0,.18);color:inherit;cursor:pointer}
+.rtext p{white-space:pre-line}
 </style>
 </head>
 <body>
@@ -157,7 +158,7 @@ var DUAS=[
 ["الدعاء إذا نزل المطر","اللَّهُمَّ صَيِّبًا نَافِعًا"],
 ["الذكر بعد نزول المطر","مُطِرْنَا بِفَضْلِ اللَّهِ وَرَحْمَتِهِ"],
 ["ما يقال عند الفزع","أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ غَضَبِهِ وَعِقَابِهِ وَشَرِّ عِبَادِهِ وَمِنْ هَمَزَاتِ الشَّيَاطِينِ وَأَنْ يَحْضُرُونِ"]];
-(function(){var K="قُلْ هُوَ اللَّهُ أَحَدٌ ۝ اللَّهُ الصَّمَدُ ۝ لَمْ يَلِدْ وَلَمْ يُولَدْ ۝ وَلَمْ يَكُنْ لَهُ كُفُوًا أَحَدٌ",F="قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ ۝ مِنْ شَرِّ مَا خَلَقَ ۝ وَمِنْ شَرِّ غَاسِقٍ إِذَا وَقَبَ ۝ وَمِنْ شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ ۝ وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ",N="قُلْ أَعُوذُ بِرَبِّ النَّاسِ ۝ مَلِكِ النَّاسِ ۝ إِلَٰهِ النَّاسِ ۝ مِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ ۝ الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ ۝ مِنَ الْجِنَّةِ وَالنَّاسِ";
+(function(){var B="بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ\n",K=B+"قُلْ هُوَ اللَّهُ أَحَدٌ ۝ اللَّهُ الصَّمَدُ ۝ لَمْ يَلِدْ وَلَمْ يُولَدْ ۝ وَلَمْ يَكُنْ لَهُ كُفُوًا أَحَدٌ",F=B+"قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ ۝ مِنْ شَرِّ مَا خَلَقَ ۝ وَمِنْ شَرِّ غَاسِقٍ إِذَا وَقَبَ ۝ وَمِنْ شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ ۝ وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ",N=B+"قُلْ أَعُوذُ بِرَبِّ النَّاسِ ۝ مَلِكِ النَّاسِ ۝ إِلَٰهِ النَّاسِ ۝ مِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ ۝ الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ ۝ مِنَ الْجِنَّةِ وَالنَّاسِ";
 var rp=[["أَصْبَحْنَا","أَمْسَيْنَا"],["أَصْبَحَ","أَمْسَى"],["أَصْبَحْتُ","أَمْسَيْتُ"],["هَذَا الْيَوْمِ","هَذِهِ اللَّيْلَةِ"],["مَا بَعْدَهُ","مَا بَعْدَهَا"]];
 function ev(s){rp.forEach(function(r){s=s.split(r[0]).join(r[1])});return s}
 var L=[
@@ -348,6 +349,7 @@ function schedNative(){var L=LN();if(!L)return;var ids=[];for(var q=1;q<=200;q++
  if(S.rem.p.on){for(var d=0;d<7;d++){var dt=new Date();dt.setDate(dt.getDate()+d);var t=pray(S.loc.lat,S.loc.lng,dt,-dt.getTimezoneOffset()/60);[0,2,3,4,5].forEach(function(i){var h=t[i][2],at=new Date(dt.getFullYear(),dt.getMonth(),dt.getDate(),Math.floor(h),Math.round((h%1)*60));if(at>new Date())ns.push({id:100+d*6+i,title:"حان موعد صلاة "+t[i][0],body:"أذكار بعد الصلاة تنتظرك",schedule:{at:at,allowWhileIdle:true}})})}}
  return ns.length?L.schedule({notifications:ns}):0}).catch(function(){})}
 document.addEventListener("change",function(e){var t=e.target,k=t.dataset&&t.dataset.rk;if(k){S.rem[k].on=t.checked?1:0;if(t.checked)askPerm();sv();schedNative();remRefresh()}else if(t.dataset&&t.dataset.rt){S.rem[t.dataset.rt].t=t.value||"06:00";var f=S.fired;if(f)delete f[t.dataset.rt];sv();schedNative()}});
+D.sleep.items[1][0]="بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ\n"+D.sleep.items[1][0];
 ld();render();
 var hk=location.hash.slice(1);if(D[hk]&&D[hk].items)openR(hk);
 window.addEventListener("hashchange",function(){var h=location.hash.slice(1);if(D[h]&&D[h].items)openR(h)});
